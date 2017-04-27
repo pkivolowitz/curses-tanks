@@ -44,7 +44,7 @@ This time, we will not be grading your code per se. If you cheat, you're only ch
 # Finishing
 
 Your finished project must include the following:
-1. Detecting a hit on your opponent. A hit is defined as the shot passing through any of the 9 spots surrounding the opposing player.
+1. Detecting a hit on your opponent. A hit is defined as the shot passing through any of the 9 spots surrounding the opposing player. Note that this isn't as simple as it seems. What if the shot is moving very quickly? It will leave many blank spots in between each movement. You will probably want to divide time into finer chunks - remember to change gravity too.
 2. Implement a scoring system. When a player hits the other three time, use curses to ask the user if they want to continue, yes or no. Note, you can hit yourself. If your own shot lands in the 9 spots centered at you it counts as a hit against you.
 3. After each hit, the player and the ground must be chosen over again.
 4. You must make a 2D tuple class so that the code in your version of Shoot() looks something like:

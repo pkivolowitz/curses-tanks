@@ -11,9 +11,13 @@ If you fork, you are downloading your own unique copy.
 # Instructions
 
 1. Finish this game. See below.
-2. Make it your own. You can change any aspect of this code and game as long as it continues to play the "same game." For example,
-I really don't like the keys I chose for up and down - do you? If you don't, pick different ones.
+2. Make it your own. You can change any aspect of this code and game as long as it continues to play the "same game." 
+
+For example, I really don't like the keys I chose for up and down - do you? If you don't, pick different ones.
 *Note: do not assume my code is correct - discovering any deficiencies is a learning objective.*
+
+Go crazy or play it safe - it's up to you.
+
 3. All your changes will be mainted on GitHub.
 4. Your GitHub must have a lovely README.md.
 5. You must work with a partner. No solo efforts because working with a partner via GitHub is one of the learning objectives.

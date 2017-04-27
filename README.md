@@ -45,7 +45,7 @@ This time, we will not be grading your code per se. If you cheat, you're only ch
 
 Your finished project must include the following:
 1. Detecting a hit on your opponent. A hit is defined as the shot passing through any of the 9 spots surrounding the opposing player.
-2. Implement a scoring system. When a player hits the other three time, use curses to ask the user if they want to continue, yes or no.
+2. Implement a scoring system. When a player hits the other three time, use curses to ask the user if they want to continue, yes or no. Note, you can hit yourself. If your own shot lands in the 9 spots centered at you it counts as a hit against you.
 3. After each hit, the player and the ground must be chosen over again.
 4. You must make a 2D tuple class so that the code in your version of Shoot() looks something like:
 
@@ -75,6 +75,12 @@ Your finished project must include the following:
 
 Some of you took it upon yourselves to finish the game based on our classwork. Make sure you conform to all aspects of this
 specification then choose a very lucky partner. Decide on extra credit and have them do the heavier lifting.
+
+# Sample ideas for extra credit
+
+1. A player can give up their shot in exchange for being able to move left and right.
+2. You can implement wind - make sure a wind value is displayed somewhere.
+3. You can implement craters left behind by shots.
 
 # What if you have nothing to show or your game doesn't work / compile / etc?
 

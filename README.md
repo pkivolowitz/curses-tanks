@@ -13,8 +13,8 @@ If you fork, you are downloading your own unique copy.
 1. Finish this game. See below.
 2. Make it your own. You can change any aspect of this code and game as long as it continues to play the "same game." 
 
-For example, I really don't like the keys I chose for up and down - do you? If you don't, pick different ones.
-*Note: do not assume my code is correct - discovering any deficiencies is a learning objective.*
+    For example, I really don't like the keys I chose for up and down - do you? If you don't, pick different ones.
+    *Note: do not assume my code is correct - discovering any deficiencies is a learning objective.*
 
 Go crazy or play it safe - it's up to you.
 

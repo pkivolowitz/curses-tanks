@@ -4,21 +4,34 @@
 #include <vector>
 #include <ctime>
 #include <cmath>
-#include <Windows.h>
 
+#if defined(WIN32)
+#include <Windows.h>
 #include "curses.h"
+#else
+#include <curses.h>
+#include <cstdlib>
+#include <unistd.h>
+#endif
+
 #include "ground.hpp"
 #include "player.hpp"
 
 using namespace std;
 
-extern int lines;
-extern int cols;
 extern int base_height_divisor;
 extern int max_height_divisor;
 
 const double PI = 3.141592653589793238463;
 
+void MySleep(int milliseconds)
+{
+#if defined(WIN32)
+	Sleep(milliseconds);
+#else
+	usleep(milliseconds * 1000);
+#endif
+}
 void DrawScreen(Ground & g, Player * players, int turn)
 {
 	erase();
@@ -41,28 +54,29 @@ void Shoot(Ground & g, Player * players, int turn)
 	
 	double pNx;
 	double pNy;
-
+	double time_divisor = 15.0;
+	
 	if (players[turn].s == RIGHT)
 		x_component = -x_component;
 
 	double p0x = players[turn].col;
 	double p0y = g.ground.at(players[turn].col);
 	// higher ground numbers are lower altitudes (0 is first line, etc).
-	p0y = lines - p0y;
+	p0y = LINES - p0y;
 	for (int i = 1; i < 5000; i++)
 	{
-		double di = i / 5.0;
+		double di = i / time_divisor;
 
 		pNx = (int)(p0x + di * x_component);
-		pNy = p0y + di * y_component + (di * di + di) * -0.98 / 2.0;
-		pNy = (int)(lines - pNy);
-		if (pNx < 1 || pNx >= cols - 2)
+		pNy = p0y + di * y_component + (di * di + di) * -9.8 / time_divisor / 1.5;
+		pNy = (int)(LINES - pNy);
+		if (pNx < 1 || pNx >= COLS - 2)
 			break;
 		if (pNy < 1) {
-			Sleep(50);
+			MySleep(50);
 			continue;
 		}
-	//	if (pNy >= lines - 2)
+	//	if (pNy >= LINES - 2)
 	//		break;
 		if (pNy > g.ground.at((int)pNx))
 			break;
@@ -70,7 +84,7 @@ void Shoot(Ground & g, Player * players, int turn)
 		move((int)pNy - 1, (int)pNx + 1);
 		addch('*');
 		refresh();
-		Sleep(50);
+		MySleep(50);
 	}
 }
 
@@ -85,12 +99,11 @@ int main(int argc, char * argv[])
 
 	initscr();
 	noecho();
-	resize_term(lines, cols);
 	keypad(stdscr, 1);
 
 	g.InitializeGround();
-	players[0].Initialize(rand() % (cols / 4), LEFT);
-	players[1].Initialize(rand() % (cols / 4) + 3 * cols / 4 - 2, RIGHT);
+	players[0].Initialize(rand() % (COLS / 4), LEFT);
+	players[1].Initialize(rand() % (COLS / 4) + 3 * COLS / 4 - 2, RIGHT);
 
 	DrawScreen(g, players, turn);
 	while (keep_going)
@@ -121,7 +134,9 @@ int main(int argc, char * argv[])
 
 		case 10:
 		case KEY_ENTER:
+#if defined(WIN32)
 		case PADENTER:
+#endif
 			Shoot(g, players, turn);
 			turn = 1 - turn;
 			break;

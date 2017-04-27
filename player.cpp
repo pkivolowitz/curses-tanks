@@ -1,12 +1,16 @@
 #include <sstream>
 #include <iomanip>
-#include "curses.h"
 #include "player.hpp"
+
+#if defined(WIN32)
+#include "curses.h"
+#else
+#include <curses.h>
+#include <cstdlib>
+#endif
 
 using namespace std;
 
-extern int lines;
-extern int cols;
 extern int base_height_divisor;
 extern int max_height_divisor;
 
@@ -68,7 +72,7 @@ void Player::DrawSettings(int turn)
 	stringstream ss;
 
 	if (s == RIGHT)
-		starting_column = cols - 18;
+		starting_column = COLS - 18;
 
 	if (my_turn)
 		attron(A_STANDOUT);

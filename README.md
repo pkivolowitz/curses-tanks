@@ -39,7 +39,7 @@ If you fork, you are downloading your own unique copy.
 
 You will self-enforce the academic honesty code. Only you and your partner can work together (and of course you may consult me or any tutor).
 
-We will not be grading your code per se. If you cheat, you're only cheating yourselves.
+This time, we will not be grading your code per se. If you cheat, you're only cheating yourself. College is what you make of it! I remain available to you for personal one-on-one consulting on your code during the summer or next year by appointment.
 
 # Finishing
 
@@ -52,8 +52,7 @@ Your finished project must include the following:
         Vec2D p0(line and column - depends on your code);
         Vec2D force(sin(angle) * players[turn].power * 0.2, cos(angle) * players[turn].power * 0.2);
         Vec2D gravity(0, -0.98); // or a different value of your choosing.
-        Vec2D pN = (p0 + di * force)
-		pNy = p0y + di * y_component + (di * di + di) * 0.5 * gravity
+        Vec2D pN = p0 + di * force + (di * di + di) * 0.5 * gravity;
         
     This means you will create the Vec2D class along with overrides for:
     

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 #include <vector>
 #include <ctime>
 #include <cmath>
@@ -84,6 +86,8 @@ int main(int argc, char * argv[])
 	initscr();
 	noecho();
 	resize_term(lines, cols);
+	keypad(stdscr, 1);
+
 	g.InitializeGround();
 	players[0].Initialize(rand() % (cols / 4), LEFT);
 	players[1].Initialize(rand() % (cols / 4) + 3 * cols / 4 - 2, RIGHT);
@@ -91,6 +95,7 @@ int main(int argc, char * argv[])
 	DrawScreen(g, players, turn);
 	while (keep_going)
 	{
+		bool show_char = false;
 		int c = getch();
 		switch (c)
 		{
@@ -115,14 +120,24 @@ int main(int argc, char * argv[])
 			break;
 
 		case 10:
+		case KEY_ENTER:
+		case PADENTER:
 			Shoot(g, players, turn);
 			turn = 1 - turn;
 			break;
 
 		default:
+			show_char = true;
 			break;
 		}
 		DrawScreen(g, players, turn);
+		if (show_char) {
+			move(0, 1);
+			stringstream ss;
+			ss << setw(4) << c << " ";
+			addstr(ss.str().c_str());
+			refresh();
+		}
 	}
 	erase();
 	addstr("Hit any key to exit");

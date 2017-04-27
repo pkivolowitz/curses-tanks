@@ -47,6 +47,28 @@ Your finished project must include the following:
 1. Detecting a hit on your opponent. A hit is defined as the shot passing through any of the 9 spots surrounding the opposing player.
 2. Implement a scoring system. When a player hits the other three time, use curses to ask the user if they want to continue, yes or no.
 3. After each hit, the player and the ground must be chosen over again.
+4. You must make a 2D tuple class so that the code in your version of Shoot() looks something like:
+
+        Vec2D p0(line and column - depends on your code);
+        Vec2D force(sin(angle) * players[turn].power * 0.2, cos(angle) * players[turn].power * 0.2);
+        Vec2D gravity(0, -0.98); // or a different value of your choosing.
+        Vec2D pN = (p0 + di * force)
+		pNy = p0y + di * y_component + (di * di + di) * 0.5 * gravity
+        
+    This means you will create the Vec2D class along with overrides for:
+    
+        int times Vec2D
+        double times Vec2D
+        Vec2D plus Vec2D
+        
+    If you are unsure how to do this, please ask me or any of the tutors. 
+
+    Here is a hard to understand but very complete <a href="http://en.cppreference.com/w/cpp/language/operators">description</a>.
+    
+    Here is a lighter <a href="https://www.tutorialspoint.com/cplusplus/cpp_overloading.htm">tutorial</a>.
+    
+    *Operator overloading is also covered well in your text book!*
+    
 4. An additional 20 points is up to you.
 5. If you meet all the requirements of this specification, the minumum grade is 70 percent. The class will decide how much higher you go.
 # What if you have already finished the game?

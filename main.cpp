@@ -1,6 +1,5 @@
 
 #include <iostream> //Eryn Benner// & // Nick Ressler
-#include <iostream>
 #include <sstream>
 #include <iomanip>
 #include <vector>
@@ -8,8 +7,6 @@
 #include <cmath>
 
 #if defined _WIN32
-
-
 #include <Windows.h>
 #include "curses.h"
 #else

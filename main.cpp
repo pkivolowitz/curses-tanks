@@ -1,17 +1,17 @@
-#include <iostream>
+#include <iostream> //Eryn Benner//
 #include <sstream>
 #include <iomanip>
 #include <vector>
 #include <ctime>
 #include <cmath>
 
-#if defined(WIN32)
+#if defined(_WIN32)
 #include <Windows.h>
 #include "curses.h"
 #else
-#include <curses.h>
+#include "curses.h"
 #include <cstdlib>
-#include <unistd.h>
+
 #endif
 
 #include "ground.hpp"
@@ -28,8 +28,6 @@ void MySleep(int milliseconds)
 {
 #if defined(WIN32)
 	Sleep(milliseconds);
-#else
-	usleep(milliseconds * 1000);
 #endif
 }
 void DrawScreen(Ground & g, Player * players, int turn)

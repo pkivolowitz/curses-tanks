@@ -8,14 +8,14 @@
 #include <cmath>
 
 #if defined _WIN32
+
+
 #include <Windows.h>
 #include "curses.h"
 #else
-#include "curses.h"
+#include <curses.h>
 #include <cstdlib>
-#include <Windows.h>
-#include "curses.h"
-#include <cstdlib>
+#include <unistd.h>
 #endif
 #include "ground.hpp"
 #include "player.hpp"

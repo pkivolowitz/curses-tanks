@@ -1,34 +1,22 @@
-<<<<<<< HEAD
-#include <iostream> //Eryn Benner//
-=======
-// Nick Ressler
+
+#include <iostream> //Eryn Benner// & // Nick Ressler
 #include <iostream>
->>>>>>> origin/master
 #include <sstream>
 #include <iomanip>
 #include <vector>
 #include <ctime>
 #include <cmath>
 
-<<<<<<< HEAD
 #if defined(_WIN32)
-=======
-
 #if defined _WIN32
->>>>>>> origin/master
 #include <Windows.h>
-
 #include "curses.h"
 #else
-<<<<<<< HEAD
 #include "curses.h"
 #include <cstdlib>
-
-=======
 #include <Windows.h>
 #include "curses.h"
 #include <cstdlib>
->>>>>>> origin/master
 #endif
 #include "ground.hpp"
 #include "player.hpp"

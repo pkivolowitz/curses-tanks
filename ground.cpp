@@ -1,7 +1,7 @@
 #if defined(WIN32)
 #include "curses.h"
 #else
-#include <curses.h>
+#include "curses.h"
 #include <cstdlib>
 #endif
 

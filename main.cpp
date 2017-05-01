@@ -6,7 +6,7 @@
 #include <ctime>
 #include <cmath>
 
-#if defined _WIN32
+#if defined(WIN32)
 #include <Windows.h>
 #include "curses.h"
 #else
@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include <unistd.h>
 #endif
+
 #include "ground.hpp"
 #include "player.hpp"
 

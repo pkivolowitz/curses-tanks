@@ -23,8 +23,47 @@ const double PI = 3.141592653589793238463;
 
 struct Coord2D
 {
-	//add Step 4 (p0, gravity, etc...)
+	double xComponent = 0.0;
+	double yComponent = 0.0;
+	void Initialize(double, double);
+
+	//overloads
+	Coord2D operator*(int);
+	Coord2D operator*(double);
+	Coord2D operator+(const Coord2D &);
 };
+
+void Coord2D::Initialize(double xVal, double yVal)
+{
+	xComponent = xVal;
+	yComponent = yVal;
+}
+
+Coord2D Coord2D::operator* (int multiplier)
+{
+	Coord2D productCoord;
+	productCoord.xComponent = this->xComponent * multiplier;
+	productCoord.yComponent = this->yComponent * multiplier;
+	//xComponent *= multiplier;
+	//yComponent *= multiplier;
+	return productCoord;
+}
+
+Coord2D Coord2D::operator* (double multiplier)
+{
+	Coord2D productCoord;
+	productCoord.xComponent = this->xComponent * multiplier;
+	productCoord.yComponent = this->yComponent * multiplier;
+	return productCoord;
+}
+
+Coord2D Coord2D::operator+ (const Coord2D & otherCoord)
+{
+	Coord2D sumCoord;
+	sumCoord.xComponent = this->xComponent + otherCoord.xComponent;
+	sumCoord.yComponent = this->yComponent + otherCoord.yComponent;
+	return sumCoord;
+}
 
 void DrawScreen(Ground & g, Player * players, int turn)
 {
@@ -80,6 +119,7 @@ bool Shoot(Ground & g, Player * players, int turn)
 		if(pNy)
 		Sleep(50);
 	}
+	return false;
 }
 
 int main(int argc, char * argv[])

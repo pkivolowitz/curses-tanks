@@ -51,7 +51,7 @@ void Shoot(Ground & g, Player * players, int turn)
 	p0y = lines - p0y;
 	for (int i = 1; i < 5000; i++)
 	{
-		double di = i / 5.0;
+		double di = i / 25.0;
 
 		pNx = (int)(p0x + di * x_component);
 		pNy = p0y + di * y_component + (di * di + di) * -0.98 / 2.0;
@@ -66,11 +66,17 @@ void Shoot(Ground & g, Player * players, int turn)
 	//		break;
 		if (pNy > g.ground.at((int)pNx))
 			break;
+		if (pNx > p0x - 1 && pNx < p0x + 1)
+		{
+			if (pNy > p0y + 1)
+				exit;
+		}
 
 		move((int)pNy - 1, (int)pNx + 1);
 		addch('*');
+
 		refresh();
-		Sleep(50);
+		Sleep(10);
 	}
 }
 

@@ -27,7 +27,7 @@ const double PI = 3.141592653589793238463;
 
 void MySleep(int milliseconds)
 {
-#if defined(WIN32)
+#if defined(_WIN32)
 	Sleep(milliseconds);
 #endif
 }

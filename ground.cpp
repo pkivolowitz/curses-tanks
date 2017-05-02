@@ -1,23 +1,27 @@
+#if defined(WIN32)
 #include "curses.h"
+#else
+#include <curses.h>
+#include <cstdlib>
+#endif
+
 #include "ground.hpp"
 
-int lines = 40;
-int cols = 120;
 int base_height_divisor = 8;
 int max_height_divisor = 2;
 
 void Ground::InitializeGround()
 {
-	int current_height = lines - lines / base_height_divisor;
-	int maximum_height = lines / max_height_divisor;
+	int current_height = LINES - LINES / base_height_divisor;
+	//int maximum_height = lines / max_height_divisor;
 
-	for (int i = 1; i < cols - 1; i++) {
+	for (int i = 1; i < COLS - 1; i++) {
 		int h = current_height;
 		int r = rand() % 10000;
 		if (r < 800) {
 			current_height++;
-			if (current_height >= lines - 2)
-				current_height = lines - 2;
+			if (current_height >= LINES - 2)
+				current_height = LINES - 2;
 		}
 		else if (r < 1600) {
 			current_height--;

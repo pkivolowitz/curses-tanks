@@ -82,43 +82,75 @@ void DrawScreen(Ground & g, Player * players, int turn)
 
 bool Shoot(Ground & g, Player * players, int turn)
 {
+	//conversion from degrees to radians
 	double angle = players[turn].angle / 180.0 * PI;
-	double y_component = sin(angle) * players[turn].power * 0.2;
-	double x_component = cos(angle) * players[turn].power * 0.2;
-	
-	double pNx;
-	double pNy;
 
+	//double y_component = sin(angle) * players[turn].power * 0.2;
+	//double x_component = cos(angle) * players[turn].power * 0.2;
+	//force coord
+	Coord2D force;
+	force.Initialize(cos(angle) * players[turn].power * 0.2, sin(angle) * players[turn].power * 0.2);
+
+	//double pNx;
+	//double pNy;
+	//declaring bombPos
+	Coord2D bombPos;
+
+	//negating x portion of force if it's right player's turn
 	if (players[turn].s == RIGHT)
-		x_component = -x_component;
+		force.xComponent *= -1;
 
-	double p0x = players[turn].col;
-	double p0y = g.ground.at(players[turn].col);
+	//double p0x = players[turn].col;
+	//double p0y = g.ground.at(players[turn].col);
 	// higher ground numbers are lower altitudes (0 is first line, etc).
-	p0y = lines - p0y;
+	//p0y = lines - p0y;
+	//tank position coord
+	Coord2D tankPos;
+	tankPos.Initialize(players[turn].col, lines - g.ground.at(players[turn].col));
+	
+	//I think I'll try defining gravity
+	Coord2D gravity;
+	gravity.Initialize(0, -0.98);
+
 	for (int i = 1; i < 5000; i++)
 	{
-		double di = i / 5.0;
+		//the larger the divisor, the smaller the interval between asterisks
+		double di = i / 10.0;
 
-		pNx = (int)(p0x + di * x_component);
-		pNy = p0y + di * y_component + (di * di + di) * -0.98 / 2.0;
-		pNy = (int)(lines - pNy);
-		if (pNx < 1 || pNx >= cols - 2)
+		//pNx = (int)(p0x + di * x_component);
+		//pNy = p0y + di * y_component + (di * di + di) * -0.98 / 2.0;
+		//pNy = (int)(lines - pNy);
+		//defining bombPos each time we come through the for loop
+		bombPos = tankPos + force * di + gravity * 0.5 * (di * di + di);
+		bombPos.yComponent = lines - bombPos.yComponent;
+
+		//if (pNx < 1 || pNx >= cols - 2)
+		if (bombPos.xComponent < 1 || bombPos.xComponent >= cols - 2)
 			break;
-		if (pNy < 1) {
-			Sleep(50);
+
+		//if (pNy < 1) {
+		if (bombPos.yComponent < 2)
+		{
+			//FIXME: change this const as needed for feeling
+			Sleep(25);
 			continue;
 		}
+		//this could be used if we don't use wind
 	//	if (pNy >= lines - 2)
 	//		break;
-		if (pNy > g.ground.at((int)pNx))
+
+		//if (pNy > g.ground.at((int)pNx))
+		//breaks out of loop if bomb would be below ground
+		if (bombPos.yComponent > g.ground.at((int)bombPos.xComponent))
 			break;
 
-		move((int)pNy - 1, (int)pNx + 1);
+		//move((int)pNy - 1, (int)pNx + 1);
+		move((int)bombPos.yComponent - 1, (int)bombPos.xComponent + 1);
 		addch('*');
 		refresh();
-		if(pNy)
-		Sleep(50);
+		//if(pNy)
+		//hit detection goes here
+		Sleep(25);
 	}
 	return false;
 }

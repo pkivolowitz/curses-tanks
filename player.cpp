@@ -39,6 +39,8 @@ void Player::Draw(Ground & g)
 void Player::PowerUp()
 {
 	power += power_increment;
+    if (power >= 100.0)
+        power = 100.0;
 }
 
 void Player::PowerDown()
@@ -88,4 +90,18 @@ void Player::DrawSettings(int turn)
 	ss = stringstream();
 	ss << setw(10) << left << "Power: " << setw(6) << power;
 	mvaddstr(line++, starting_column, ss.str().c_str());
+    
+    ss = stringstream();
+    ss << setw(10) << left << "Lives: " << setw(5) << life_counter;
+    mvaddstr(line++, starting_column, ss.str().c_str());
+}
+
+bool Player::Hit(int line, int column, Player & p)
+{
+    bool rv = false;
+    if ((line == 1 || 2 || 3) && (col == p.col || p.col + 1 || p.col  - 1))
+        rv = true;
+        
+    return rv;
+    
 }

@@ -21,6 +21,11 @@ extern int max_height_divisor;
 
 const double PI = 3.141592653589793238463;
 
+struct Coord2D
+{
+	//add Step 4 (p0, gravity, etc...)
+};
+
 void DrawScreen(Ground & g, Player * players, int turn)
 {
 	erase();
@@ -35,7 +40,7 @@ void DrawScreen(Ground & g, Player * players, int turn)
 
 //http://www.iforce2d.net/b2dtut/projected-trajectory
 
-void Shoot(Ground & g, Player * players, int turn)
+bool Shoot(Ground & g, Player * players, int turn)
 {
 	double angle = players[turn].angle / 180.0 * PI;
 	double y_component = sin(angle) * players[turn].power * 0.2;
@@ -72,6 +77,7 @@ void Shoot(Ground & g, Player * players, int turn)
 		move((int)pNy - 1, (int)pNx + 1);
 		addch('*');
 		refresh();
+		if(pNy)
 		Sleep(50);
 	}
 }
@@ -124,7 +130,11 @@ int main(int argc, char * argv[])
 		case 10:
 		case KEY_ENTER:
 		case PADENTER:
-			Shoot(g, players, turn);
+			if (Shoot(g, players, turn) == true)
+			{
+				move(10, 10);
+				addch('H');
+			}
 			turn = 1 - turn;
 			break;
 

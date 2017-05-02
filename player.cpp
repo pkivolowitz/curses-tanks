@@ -13,6 +13,7 @@ extern int max_height_divisor;
 const int Player::power_increment = 1;
 const double Player::angle_increment = 1;
 
+
 Player::Player()
 {
 	s = LEFT;

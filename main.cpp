@@ -42,11 +42,46 @@ void DrawScreen(Ground & g, Player * players, int turn)
 	players[1].DrawSettings(turn);
 	refresh();
 }
+void MainMenu()
+{
+	start_color();
+	init_pair(1, COLOR_RED, COLOR_BLACK);
+	attron(COLOR_PAIR(1));
+	move(1,0);
+	stringstream ss;
+	ss = stringstream();
+	ss << "Welcome to Tanks!";
+	
+	addstr(ss.str().c_str());
 
+}
+/*
+int HitBox(int P1 , int shotl, int shotc, int turn)
+{
+	
+	if (turn == 0)
+	{
+		if (shotl > players + LINES + 1 || shotl < P1 - LINES - 1)
+		{
+
+		}
+		if (shotc > P1 + COLS + 1 || shotc > P1 - COLS - 1)
+		{
+
+		}
+	}
+}
+*/
 //http://www.iforce2d.net/b2dtut/projected-trajectory
 
-void Shoot(Ground & g, Player * players, int turn)
+class Vec2D
 {
+
+};
+void Shoot(Ground & g, Player * players, int turn, int bulleth, int bulletv)
+{
+	
+	
 	double angle = players[turn].angle / 180.0 * PI;
 	double y_component = sin(angle) * players[turn].power * 0.2;
 	double x_component = cos(angle) * players[turn].power * 0.2;
@@ -62,6 +97,9 @@ void Shoot(Ground & g, Player * players, int turn)
 	double p0y = g.ground.at(players[turn].col);
 	// higher ground numbers are lower altitudes (0 is first line, etc).
 	p0y = LINES - p0y;
+	bulleth = pNx;
+	bulletv = pNy - 1;
+	//players[0] == cols
 	for (int i = 1; i < 5000; i++)
 	{
 		double di = i / time_divisor;
@@ -74,17 +112,34 @@ void Shoot(Ground & g, Player * players, int turn)
 		if (pNy < 1) {
 			MySleep(50);
 			continue;
+			int hit;
+			while (turn == true)
+			
+			{
+				if (pNy > players[0].Initialize + 1 || pNy < players[0].Initialize - 1)
+				{
+					hit = false;
+				}
+				else if (pNx < players[0].Initialize + 1 || pNx > players[0].Initialize - 1)
+				{
+					hit = true;
+				}
+				else
+					hit == true;
+				players[turn].health--;
+			}
 		}
-	//	if (pNy >= LINES - 2)
-	//		break;
+		if (pNy >= LINES - 2)
+			break;
 		if (pNy > g.ground.at((int)pNx))
 			break;
 
 		move((int)pNy - 1, (int)pNx + 1);
-		addch('*');
+		addch('.');
 		refresh();
 		MySleep(50);
 	}
+	
 }
 
 int main(int argc, char * argv[])
@@ -95,18 +150,29 @@ int main(int argc, char * argv[])
 	bool keep_going = true;
 	Ground g;
 	Player players[2];
-
+	
+	
+	
 	initscr();
 	noecho();
+	while (!getch() == KEY_ENTER)
+	{
+		MainMenu();
+		
+	}
+	clear();
 	keypad(stdscr, 1);
-
+	int bulleth = 0;
+	int bulletv = 0;
 	g.InitializeGround();
 	players[0].Initialize(rand() % (COLS / 4), LEFT);
 	players[1].Initialize(rand() % (COLS / 4) + 3 * COLS / 4 - 2, RIGHT);
 
 	DrawScreen(g, players, turn);
+	
 	while (keep_going)
 	{
+		
 		bool show_char = false;
 		int c = getch();
 		switch (c)
@@ -136,7 +202,8 @@ int main(int argc, char * argv[])
 #if defined(WIN32)
 		case PADENTER:
 #endif
-			Shoot(g, players, turn);
+			Shoot(g, players, turn, bulleth, bulletv);
+			//HitBox(players[1].Initialize(), )
 			turn = 1 - turn;
 			break;
 

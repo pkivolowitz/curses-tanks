@@ -18,10 +18,10 @@ public:
 	void PowerDown();
 	void AngleUp();
 	void AngleDown();
-
 	int col;
 	double power;
 	double angle;
+	int health = 1;
 	Side s;
 
 	static const int power_increment;

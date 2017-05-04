@@ -62,6 +62,21 @@ void Player::AngleDown()
 		angle = 0.0;
 }
 
+void Player::Score()
+{
+	score = 3;
+}
+
+//bool Player::Hit(int l, int c, Player &players)
+//{
+//	bool rv = false;
+//
+//	if (c == players[1 - turn].col)
+//		rv = true;
+//
+//	return rv;
+//}
+
 void Player::DrawSettings(int turn)
 {
 	bool my_turn = (turn == 0 && s == LEFT) || (turn == 1 && s == RIGHT);
@@ -88,4 +103,10 @@ void Player::DrawSettings(int turn)
 	ss = stringstream();
 	ss << setw(10) << left << "Power: " << setw(6) << power;
 	mvaddstr(line++, starting_column, ss.str().c_str());
+
+	ss = stringstream();
+	ss << setw(10) << left << "Score: " << setw(6) << score;
+	mvaddstr(line++, starting_column, ss.str().c_str());
 }
+
+

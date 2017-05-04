@@ -18,11 +18,14 @@ public:
 	void PowerDown();
 	void AngleUp();
 	void AngleDown();
+	void Score();
+	bool Hit(int l, int c, Player &players);
 
 	int col;
 	double power;
 	double angle;
 	Side s;
+	int score;
 
 	static const int power_increment;
 	static const double angle_increment;

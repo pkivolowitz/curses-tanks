@@ -33,7 +33,7 @@ void Player::Initialize(int column, Side side)
 
 void Player::Draw(Ground & g)
 {
-	mvaddch(g.ground.at(col) - 1, col + 1, '@');
+	mvaddch(g.ground.at(col) - 1, col + 1, ACS_BLOCK);
 }
 
 void Player::PowerUp()
@@ -87,5 +87,9 @@ void Player::DrawSettings(int turn)
 	
 	ss = stringstream();
 	ss << setw(10) << left << "Power: " << setw(6) << power;
+	mvaddstr(line++, starting_column, ss.str().c_str());
+
+	ss = stringstream();
+	ss << setw(10) << left << "Health: " << setw(6) << health;
 	mvaddstr(line++, starting_column, ss.str().c_str());
 }

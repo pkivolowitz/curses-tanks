@@ -35,6 +35,6 @@ void Ground::InitializeGround()
 void Ground::Draw()
 {
 	for (size_t i = 0; i < ground.size(); i++) {
-		mvaddch(ground.at(i), i + 1, '-');
+		mvaddch(ground.at(i), i + 1, ACS_HLINE);
 	}
 }

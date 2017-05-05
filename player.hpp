@@ -19,6 +19,7 @@ public:
 	void AngleUp();
 	void AngleDown();
 	int col;
+	int line;
 	double power;
 	double angle;
 	int health = 1;

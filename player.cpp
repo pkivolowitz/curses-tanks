@@ -20,7 +20,7 @@ const double Player::angle_increment = 1;
 Player::Player()
 {
 	s = LEFT;
-	col = 0;
+	int col;
 	angle = 45.0;
 	power = 50.0;
 }
@@ -84,7 +84,7 @@ void Player::DrawSettings(int turn)
 	ss = stringstream();
 	ss << setw(10) << left << "Angle: " << setw(6) << angle;
 	mvaddstr(line++, starting_column, ss.str().c_str());
-	
+
 	ss = stringstream();
 	ss << setw(10) << left << "Power: " << setw(6) << power;
 	mvaddstr(line++, starting_column, ss.str().c_str());
@@ -92,4 +92,5 @@ void Player::DrawSettings(int turn)
 	ss = stringstream();
 	ss << setw(10) << left << "Health: " << setw(6) << health;
 	mvaddstr(line++, starting_column, ss.str().c_str());
+
 }

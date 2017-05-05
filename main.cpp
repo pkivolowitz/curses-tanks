@@ -80,68 +80,101 @@ class Vec2D
 };
 void Shoot(Ground & g, Player * players, int turn, int bulleth, int bulletv)
 {
-	
-	
+
+
 	double angle = players[turn].angle / 180.0 * PI;
+	//vertical
 	double y_component = sin(angle) * players[turn].power * 0.2;
+	//horizontal
 	double x_component = cos(angle) * players[turn].power * 0.2;
-	
+
 	double pNx;
 	double pNy;
-	double time_divisor = 15.0;
-	
+
+	//flips the bullet if it's the player on the other side of the screen
 	if (players[turn].s == RIGHT)
 		x_component = -x_component;
 
 	double p0x = players[turn].col;
 	double p0y = g.ground.at(players[turn].col);
 	// higher ground numbers are lower altitudes (0 is first line, etc).
+
 	p0y = LINES - p0y;
-	bulleth = pNx;
-	bulletv = pNy - 1;
-	//players[0] == cols
+
+
 	for (int i = 1; i < 5000; i++)
 	{
-		double di = i / time_divisor;
+		double di = i / 5.0;
 
 		pNx = (int)(p0x + di * x_component);
-		pNy = p0y + di * y_component + (di * di + di) * -9.8 / time_divisor / 1.5;
+		pNy = p0y + di * y_component + (di * di + di) * -0.98 / 2.0;
 		pNy = (int)(LINES - pNy);
+		//if it goes too far left or too far right this ends the turn
 		if (pNx < 1 || pNx >= COLS - 2)
 			break;
+		//if this goes off the screen upwards it just sleeps until the bomb comes back in
 		if (pNy < 1) {
-			MySleep(50);
+			Sleep(50);
 			continue;
-			int hit;
-			while (turn == true)
-			
-			{
-				if (pNy > players[0].Initialize + 1 || pNy < players[0].Initialize - 1)
-				{
-					hit = false;
-				}
-				else if (pNx < players[0].Initialize + 1 || pNx > players[0].Initialize - 1)
-				{
-					hit = true;
-				}
-				else
-					hit == true;
-				players[turn].health--;
-			}
 		}
+
+		//if bullet goes off the screen at the bottom
 		if (pNy >= LINES - 2)
 			break;
-		if (pNy > g.ground.at((int)pNx))
-			break;
 
+
+
+		//this makes the bullet only one
+		erase();
+		DrawScreen(g, players, turn);
 		move((int)pNy - 1, (int)pNx + 1);
-		addch('.');
-		refresh();
-		MySleep(50);
-	}
-	
-}
+		addch(ACS_LANTERN);
 
+
+		refresh();
+		Sleep(100);
+	}
+	//if bomb is within 1 column in either direction of player 1 or on the column
+	if (bulleth == players[0].col || bulleth == players[0].col + 1 || bulleth == players[0].col - 1)
+	{
+		if (bulletv == players[0].line || bulletv == players[0].line + 1 || bulletv == players[0].line - 1)
+		{
+			players[0].health--;
+		}
+	}
+	//if bomb is within 1 column in either direction of player 2
+	if (bulleth == players[1].col || bulleth == players[1].col + 1 || bulleth == players[1].col - 1)
+	{
+		if (bulletv == players[1].line || bulletv == players[1].line + 1 || bulletv == players[1].line - 1)
+		{
+			players[1].health--;
+		}
+
+}
+	bulleth = pNx + 1;
+	bulletv = pNy - 1;
+
+	stringstream ss;
+	ss = stringstream();
+	ss << "col: " << bulleth;
+	move(1, COLS / 2 - 3);
+	addstr(ss.str().c_str());
+	refresh();
+
+	ss = stringstream();
+	ss << "line: " << bulletv;
+	move(2, COLS / 2 - 3);
+	addstr(ss.str().c_str());
+	refresh();
+
+	ss = stringstream();
+	ss << "#";
+	move(bulletv, bulleth);
+	addstr(ss.str().c_str());
+	refresh();
+
+	Sleep(1200);
+}
 int main(int argc, char * argv[])
 {
 	srand((unsigned int)time(nullptr));

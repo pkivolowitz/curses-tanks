@@ -42,20 +42,37 @@ void DrawScreen(Ground & g, Player * players, int turn)
 	players[1].DrawSettings(turn);
 
 }
-void MainMenu()
-{
 
-	start_color();
+int MainMenu()
+{
+	int rv = 0;
+	
 	//init_pair(1, COLOR_RED, COLOR_BLACK);
 	//attron(COLOR_PAIR(1));
+	WINDOW *w;
+	w = newwin(10, 12, 1, 1);
+	box(w, 0, 0);
 	stringstream ss;
 	ss = stringstream();
-	move(LINES / 3, 17);
+	move(LINES / 4, 30);
 	ss << "Welcome to Tanks!";
-	
 	addstr(ss.str().c_str());
-	noecho();
-	refresh();
+	ss = stringstream();
+	move(LINES / 3, 20);
+	ss << "Created by Nick Ressler & Eryn Benner";
+	addstr(ss.str().c_str());
+	char c = getch();
+	switch (c)
+	{
+	case 'q':
+	case 'Q':
+		rv = 4;
+		break;
+	}
+			//add a case where if none of the options are chosen nothing happens
+			noecho();
+
+	return rv;
 }
 
 //http://www.iforce2d.net/b2dtut/projected-trajectory
@@ -171,18 +188,27 @@ int main(int argc, char * argv[])
 	Player players[2];
 	
 	initscr();
-	/*
+	
 	while (true)
 	{
-		char quit 
-		char x = getch();
-		
-		
+		bool quit;
+		quit = true;
 
-			MainMenu();
+		keypad(stdscr, 1);
+	
+
+		int x = 0;
+		x = MainMenu();
+
+		//quit
+		if (x == 4)
+		{
+			quit = false;
+			break;
+		}
 		
 	}
-	*/
+	
 	clear();
 	keypad(stdscr, 1);
 	int bulleth = 0;

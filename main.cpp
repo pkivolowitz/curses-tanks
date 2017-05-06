@@ -122,14 +122,11 @@ void Shoot(Ground & g, Player * players, int turn, int bulleth, int bulletv)
 		if (pNy >= LINES - 2)
 			break;
 
-
-
 		//this makes the bullet only one
 		erase();
 		DrawScreen(g, players, turn);
 		move((int)pNy - 1, (int)pNx + 1);
 		addch(ACS_LANTERN);
-
 
 		refresh();
 		Sleep(100);
@@ -184,8 +181,6 @@ int main(int argc, char * argv[])
 	Ground g;
 	Player players[2];
 	
-	
-	
 	initscr();
 	noecho();
 	while (!getch() == KEY_ENTER)
@@ -222,7 +217,7 @@ int main(int argc, char * argv[])
 			players[turn].PowerUp();
 			break;
 
-		case 'u':
+		case KEY_RIGHT:
 			players[turn].AngleUp();
 			break;
 

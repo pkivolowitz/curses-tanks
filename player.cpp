@@ -23,6 +23,7 @@ Player::Player()
 	int col;
 	angle = 45.0;
 	power = 50.0;
+	health = 1;
 }
 
 void Player::Initialize(int column, Side side)

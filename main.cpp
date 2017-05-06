@@ -61,11 +61,15 @@ int MainMenu()
 	move(LINES / 3, 20);
 	ss << "Created by Nick Ressler & Eryn Benner";
 	addstr(ss.str().c_str());
+	ss = stringstream();
+	move(LINES / 2, 24);
+	ss << "Press The 'E' Key to Continue";
+	addstr(ss.str().c_str());
 	char c = getch();
 	switch (c)
 	{
-	case 'q':
-	case 'Q':
+	case 'e':
+	case 'E':
 		rv = 4;
 		break;
 	}
@@ -86,15 +90,15 @@ void Shoot(Ground & g, Player * players, int turn, int bulleth, int bulletv)
 
 
 	double angle = players[turn].angle / 180.0 * PI;
-	//vertical
+	//ver
 	double y_component = sin(angle) * players[turn].power * 0.2;
-	//horizontal
+	//hor
 	double x_component = cos(angle) * players[turn].power * 0.2;
 
 	double pNx;
 	double pNy;
 
-	//flips the bullet if it's the player on the other side of the screen
+	
 	if (players[turn].s == RIGHT)
 		x_component = -x_component;
 
@@ -121,63 +125,103 @@ void Shoot(Ground & g, Player * players, int turn, int bulleth, int bulletv)
 			continue;
 		}
 
-		//if bullet goes off the screen at the bottom
+		
 		if (pNy >= LINES - 2)
 			break;
 
+		//Bullet wont go through the ground
+		if (pNy >= g.ground.at((int)pNx))
+		{
+			g.ground.at((int)pNx)++;
 
+			g.ground.at((int)pNx - 1)++;
 
-		//this makes the bullet only one
+			g.ground.at((int)pNx + 1)++;
+			break;
+		}
+
+		//No trail of bullets
 		erase();
+
 		DrawScreen(g, players, turn);
+
 		move((int)pNy - 1, (int)pNx + 1);
+
 		addch(ACS_LANTERN);
 
 
 		refresh();
-		Sleep(100);
-	}
-	//if bomb is within 1 column in either direction of player 1 or on the column
-	if (bulleth == players[0].col || bulleth == players[0].col + 1 || bulleth == players[0].col - 1)
-	{
-		if (bulletv == players[0].line || bulletv == players[0].line + 1 || bulletv == players[0].line - 1)
+		// super fast
+		if (players[turn].power >= 90)
 		{
-			players->health--;
+			Sleep(50);
 		}
-	}
-	//if bomb is within 1 column in either direction of player 2
-	if (bulleth == players[1].col || bulleth == players[1].col + 1 || bulleth == players[1].col - 1)
-	{
-		if (bulletv == players[1].line || bulletv == players[1].line + 1 || bulletv == players[1].line - 1)
+		//fast
+		if(players[turn].power > 75 && players[turn].power < 90)
 		{
-			players->health--;
+			Sleep(90);
 		}
+		//average
+		if(players[turn].power > 50 && players[turn].power < 75)
+		{
+			Sleep(125);
+		}
+		//slower
+		if(players[turn].power > 25 && players[turn].power < 50)
+		{
+			Sleep(150);
+		}
+		//super slow
+		if (players[turn].power <= 25)
+		{
+			Sleep(175);
+		}
+	
+	}
 
-}
 	bulleth = pNx + 1;
 	bulletv = pNy - 1;
 
 	stringstream ss;
 	ss = stringstream();
 	ss << "col: " << bulleth;
-	move(2, COLS / 2 - 5);
+	move(1, COLS / 2 - 3);
 	addstr(ss.str().c_str());
 	refresh();
 
 	ss = stringstream();
 	ss << "line: " << bulletv;
-	move(3, COLS / 2 - 5);
+	move(2, COLS / 2 - 3);
 	addstr(ss.str().c_str());
 	refresh();
 
-	ss = stringstream();
-	ss << "#";
-	move(bulletv, bulleth);
-	addstr(ss.str().c_str());
-	refresh();
+	
 
-	Sleep(1200);
+	Sleep(1500);
+
+
+	//makes it so if the bullet is within col of player 1, it will hit
+	if (bulleth == players[0].col || bulleth == players[0].col + 1 || bulleth == players[0].col - 1)
+	{
+		if (bulletv == players[0].line || bulletv == players[0].line + 1 || bulletv == players[0].line - 1)
+		{
+			players[0].health--;
+		}
+	}
+
+	//makes it so if the bullet is within col of player 2, it will hit
+	if (bulleth == players[1].col || bulleth == players[1].col + 1 || bulleth == players[1].col - 1)
+	{
+		if (bulletv == players[1].line || bulletv == players[1].line + 1 || bulletv == players[1].line - 1)
+		{
+			players[1].health--;
+		}
+	}
+
 }
+	
+
+
 int main(int argc, char * argv[])
 {
 	srand((unsigned int)time(nullptr));

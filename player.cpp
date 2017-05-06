@@ -21,6 +21,7 @@ Player::Player()
 {
 	s = LEFT;
 	int col;
+	health = 1;
 	angle = 45.0;
 	power = 50.0;
 }

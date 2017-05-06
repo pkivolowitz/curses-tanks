@@ -1,6 +1,9 @@
 #ifndef PDC_DLL_BUILD
 # define PDC_DLL_BUILD
 #endif
+#ifndef PDC_WIDE
+# define PDC_WIDE
+#endif
 
 /* Public Domain Curses */
 

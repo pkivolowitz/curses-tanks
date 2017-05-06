@@ -40,38 +40,24 @@ void DrawScreen(Ground & g, Player * players, int turn)
 	players[1].Draw(g);
 	players[0].DrawSettings(turn);
 	players[1].DrawSettings(turn);
-	refresh();
+
 }
 void MainMenu()
 {
+
 	start_color();
-	init_pair(1, COLOR_RED, COLOR_BLACK);
-	attron(COLOR_PAIR(1));
-	move(1,0);
+	//init_pair(1, COLOR_RED, COLOR_BLACK);
+	//attron(COLOR_PAIR(1));
 	stringstream ss;
 	ss = stringstream();
+	move(LINES / 3, 17);
 	ss << "Welcome to Tanks!";
 	
 	addstr(ss.str().c_str());
-
+	noecho();
+	refresh();
 }
-/*
-int HitBox(int P1 , int shotl, int shotc, int turn)
-{
-	
-	if (turn == 0)
-	{
-		if (shotl > players + LINES + 1 || shotl < P1 - LINES - 1)
-		{
 
-		}
-		if (shotc > P1 + COLS + 1 || shotc > P1 - COLS - 1)
-		{
-
-		}
-	}
-}
-*/
 //http://www.iforce2d.net/b2dtut/projected-trajectory
 
 class Vec2D
@@ -139,7 +125,7 @@ void Shoot(Ground & g, Player * players, int turn, int bulleth, int bulletv)
 	{
 		if (bulletv == players[0].line || bulletv == players[0].line + 1 || bulletv == players[0].line - 1)
 		{
-			players[0].health--;
+			players->health--;
 		}
 	}
 	//if bomb is within 1 column in either direction of player 2
@@ -147,7 +133,7 @@ void Shoot(Ground & g, Player * players, int turn, int bulleth, int bulletv)
 	{
 		if (bulletv == players[1].line || bulletv == players[1].line + 1 || bulletv == players[1].line - 1)
 		{
-			players[1].health--;
+			players->health--;
 		}
 
 }
@@ -157,13 +143,13 @@ void Shoot(Ground & g, Player * players, int turn, int bulleth, int bulletv)
 	stringstream ss;
 	ss = stringstream();
 	ss << "col: " << bulleth;
-	move(1, COLS / 2 - 3);
+	move(2, COLS / 2 - 5);
 	addstr(ss.str().c_str());
 	refresh();
 
 	ss = stringstream();
 	ss << "line: " << bulletv;
-	move(2, COLS / 2 - 3);
+	move(3, COLS / 2 - 5);
 	addstr(ss.str().c_str());
 	refresh();
 
@@ -184,15 +170,19 @@ int main(int argc, char * argv[])
 	Ground g;
 	Player players[2];
 	
-	
-	
 	initscr();
-	noecho();
-	while (!getch() == KEY_ENTER)
+	/*
+	while (true)
 	{
-		MainMenu();
+		char quit 
+		char x = getch();
+		
+		
+
+			MainMenu();
 		
 	}
+	*/
 	clear();
 	keypad(stdscr, 1);
 	int bulleth = 0;
@@ -202,9 +192,10 @@ int main(int argc, char * argv[])
 	players[1].Initialize(rand() % (COLS / 4) + 3 * COLS / 4 - 2, RIGHT);
 
 	DrawScreen(g, players, turn);
-	
+
 	while (keep_going)
 	{
+		
 		
 		bool show_char = false;
 		int c = getch();
@@ -214,15 +205,15 @@ int main(int argc, char * argv[])
 			keep_going = false;
 			break;
 
-		case '<':
+		case 'w':
 			players[turn].PowerDown();
 			break;
 
-		case '>':
+		case 's':
 			players[turn].PowerUp();
 			break;
 
-		case 'u':
+		case 'a':
 			players[turn].AngleUp();
 			break;
 
@@ -236,7 +227,6 @@ int main(int argc, char * argv[])
 		case PADENTER:
 #endif
 			Shoot(g, players, turn, bulleth, bulletv);
-			//HitBox(players[1].Initialize(), )
 			turn = 1 - turn;
 			break;
 
@@ -253,11 +243,14 @@ int main(int argc, char * argv[])
 			refresh();
 		}
 	}
+	/*
 	erase();
 	addstr("Hit any key to exit");
 	refresh();
 	getch();
 	echo();
 	endwin();
+	return 0;
+	*/
 	return 0;
 }

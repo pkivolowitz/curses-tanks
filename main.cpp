@@ -149,7 +149,6 @@ void Shoot(Ground & g, Player * players, int turn, int bulleth, int bulletv)
 
 		addch(ACS_LANTERN);
 
-
 		refresh();
 		// super fast
 		if (players[turn].power >= 90)
@@ -180,7 +179,7 @@ void Shoot(Ground & g, Player * players, int turn, int bulleth, int bulletv)
 	}
 
 	bulleth = pNx + 1;
-	bulletv = pNy - 1;
+	bulletv = pNy;
 
 	stringstream ss;
 	ss = stringstream();
@@ -198,26 +197,47 @@ void Shoot(Ground & g, Player * players, int turn, int bulleth, int bulletv)
 	
 
 	Sleep(1500);
-
+	
 
 	//makes it so if the bullet is within col of player 1, it will hit
-	if (bulleth == players[0].col || bulleth == players[0].col + 1 || bulleth == players[0].col - 1)
+	if (bulleth == players[0].col || bulleth == players[0].col + 1 || bulleth == players[0].col + 2 || bulleth == players[0].col - 1 || bulleth == players[0].col - 2)
 	{
-		if (bulletv == players[0].line || bulletv == players[0].line + 1 || bulletv == players[0].line - 1)
+		if (bulletv == players[0].line || bulletv == players[0].line + 1 || bulletv == players[0].line + 2 || bulletv == players[0].line - 1 || bulletv == players[0].line - 2)
 		{
-			players[0].health--;
+	
+		players[0].health--;
 		}
 	}
 
 	//makes it so if the bullet is within col of player 2, it will hit
-	if (bulleth == players[1].col || bulleth == players[1].col + 1 || bulleth == players[1].col - 1)
+	if (bulleth == players[1].col || bulleth == players[1].col + 1 || bulleth == players[1].col + 2 || bulleth == players[1].col - 1 || bulleth == players[1].col - 2)
 	{
-		if (bulletv == players[1].line || bulletv == players[1].line + 1 || bulletv == players[1].line - 1)
+		if (bulletv == players[1].line || bulletv == players[1].line + 1 || bulletv == players[1].line + 2 || bulletv == players[1].line - 1 || bulletv == players[1].line - 2)
 		{
-			players[1].health--;
+		
+		players[1].health--;
 		}
 	}
+	if (players[0].health == 0)
+	{
+		ss = stringstream();
+		ss << "Player 1 is Dead! ";
+		move(2, COLS / 5 - 3);
+		addstr(ss.str().c_str());
 
+		Sleep(1000);
+		refresh();
+	}
+	if (players[1].health == 0)
+	{
+		ss = stringstream();
+		ss << "Player 2 is Dead! ";
+		move(2, COLS / 5 - 3);
+		addstr(ss.str().c_str());
+
+		Sleep(1000);
+		refresh();
+	}
 }
 	
 
@@ -299,7 +319,7 @@ int main(int argc, char * argv[])
 			Shoot(g, players, turn, bulleth, bulletv);
 			turn = 1 - turn;
 			break;
-
+			
 		default:
 			show_char = true;
 			break;

@@ -22,7 +22,7 @@ public:
 	int line;
 	double power;
 	double angle;
-	int health = 1;
+	int health;
 	Side s;
 
 	static const int power_increment;

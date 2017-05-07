@@ -20,7 +20,8 @@ const double Player::angle_increment = 1;
 Player::Player()
 {
 	s = LEFT;
-	int col;
+	col = 0;
+	line = 0;
 	health = 1;
 	angle = 45.0;
 	power = 50.0;
@@ -35,6 +36,9 @@ void Player::Initialize(int column, Side side)
 void Player::Draw(Ground & g)
 {
 	mvaddch(g.ground.at(col) - 1, col + 1, ACS_BLOCK);
+	line = g.ground.at(col) - 1;
+
+
 }
 
 void Player::PowerUp()
@@ -91,7 +95,10 @@ void Player::DrawSettings(int turn)
 	mvaddstr(line++, starting_column, ss.str().c_str());
 
 	ss = stringstream();
-	ss << setw(10) << left << "Health: " << setw(6) << health;
+	for (unsigned int i = 0; i < health; i++)
+	{
+		ss << "# ";
+	}
 	mvaddstr(line++, starting_column, ss.str().c_str());
 
 }

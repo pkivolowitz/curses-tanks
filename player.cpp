@@ -5,7 +5,7 @@
 #if defined(WIN32)
 #include "curses.h"
 #else
-#include <curses.h>
+#include "curses.h"
 #include <cstdlib>
 #endif
 
@@ -21,6 +21,8 @@ Player::Player()
 {
 	s = LEFT;
 	col = 0;
+	line = 0;
+	health = 1;
 	angle = 45.0;
 	power = 50.0;
 }
@@ -33,7 +35,10 @@ void Player::Initialize(int column, Side side)
 
 void Player::Draw(Ground & g)
 {
-	mvaddch(g.ground.at(col) - 1, col + 1, '@');
+	mvaddch(g.ground.at(col) - 1, col + 1, ACS_BLOCK);
+	line = g.ground.at(col) - 1;
+
+
 }
 
 void Player::PowerUp()
@@ -84,8 +89,16 @@ void Player::DrawSettings(int turn)
 	ss = stringstream();
 	ss << setw(10) << left << "Angle: " << setw(6) << angle;
 	mvaddstr(line++, starting_column, ss.str().c_str());
-	
+
 	ss = stringstream();
 	ss << setw(10) << left << "Power: " << setw(6) << power;
 	mvaddstr(line++, starting_column, ss.str().c_str());
+
+	ss = stringstream();
+	for (unsigned int i = 0; i < health; i++)
+	{
+		ss << "# ";
+	}
+	mvaddstr(line++, starting_column, ss.str().c_str());
+
 }

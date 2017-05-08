@@ -245,3 +245,9 @@ ModelManifest.xml
 *.lib
 pdcurses.*
 
+
+curses-tanks-m/curses-tanks-m.xcodeproj/xcuserdata/tommyking.xcuserdatad/xcschemes/xcschememanagement.plist
+
+curses-tanks-m/curses-tanks-m.xcodeproj/xcuserdata/tommyking.xcuserdatad/xcschemes/curses-tanks-m.xcscheme
+
+curses-tanks-m/curses-tanks-m.xcodeproj/project.xcworkspace/xcuserdata/tommyking.xcuserdatad/UserInterfaceState.xcuserstate

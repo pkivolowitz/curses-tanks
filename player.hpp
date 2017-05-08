@@ -18,11 +18,14 @@ public:
 	void PowerDown();
 	void AngleUp();
 	void AngleDown();
+    
+    bool Hit(int line, int col, Player & p);
 
 	int col;
 	double power;
 	double angle;
 	Side s;
+    int life_counter = 3;
 
 	static const int power_increment;
 	static const double angle_increment;

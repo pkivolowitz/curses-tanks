@@ -250,8 +250,6 @@ void Shoot(Ground & g, Player * players, int turn, double bulleth, double bullet
 
 			break;
 
-
-
 		//Bullet wont go through the ground
 
 		if (pNy >= g.ground.at((int)pNx))
@@ -319,7 +317,7 @@ void Shoot(Ground & g, Player * players, int turn, double bulleth, double bullet
 		//                 |              |
 		//                 V
 		//               line + 1
-		if (bulletv >= players[0].col - 1 && bulleth <= players[0].line + 1 || bulletv <= players[0].col + 1 && bulleth >= players[0].col - 1)
+		/*if (bulletv >= players[0].col - 1 && bulleth <= players[0].line + 1 || bulletv <= players[0].col + 1 && bulleth >= players[0].col - 1)
 		{
 			hit = true;
 			break;
@@ -332,9 +330,10 @@ void Shoot(Ground & g, Player * players, int turn, double bulleth, double bullet
 			break;
 		}
 		if (hit == true)
-			players[1].health--;
-		/*Testing bullet coordinates*/
-		/*stringstream ss;
+			players[1].health--;*/
+
+		//Testing bullet coordinates//
+		stringstream ss;
 		ss = stringstream();
 		ss << "col: " << bulleth;
 
@@ -352,7 +351,7 @@ void Shoot(Ground & g, Player * players, int turn, double bulleth, double bullet
 		mvaddstr(bulletv, bulleth, ss.str().c_str());
 		refresh();
 
-		Sleep(1200);*/
+		Sleep(1200);
 	}
 	
 }

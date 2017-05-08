@@ -33,7 +33,7 @@ void Player::Initialize(int column, Side side)
 
 void Player::Draw(Ground & g)
 {
-	mvaddch(g.ground.at(col) - 1, col + 1, '@');
+	mvaddch(g.ground.at(col) - 1, col + 1, '▄');
 }
 
 void Player::PowerUp()

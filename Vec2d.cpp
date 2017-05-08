@@ -30,4 +30,15 @@ Vec2d Vec2d::operator+(Vec2d & other)
 	return Vec2d(*this);
 }
 
+Vec2d Vec2d::operator*(int i)
+{
+	x *= i;
+	y *= i;
+	return Vec2d(*this);
+}
+
+
+
+
+
 

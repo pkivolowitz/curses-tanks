@@ -8,6 +8,7 @@ public:
 	Vec2d operator=(Vec2d &other);
 	Vec2d operator*(double);
 	Vec2d operator+(Vec2d &other);
+	Vec2d operator*(int);
 
 	double x;
 	double y;

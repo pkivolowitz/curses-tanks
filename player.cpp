@@ -16,6 +16,7 @@ extern int max_height_divisor;
 
 const int Player::power_increment = 1;
 const double Player::angle_increment = 1;
+const int Player::health_increment = 1;
 
 Player::Player()
 {
@@ -23,6 +24,7 @@ Player::Player()
 	col = 0;
 	angle = 45.0;
 	power = 50.0;
+	health = 3;
 }
 
 void Player::Initialize(int column, Side side)
@@ -62,20 +64,21 @@ void Player::AngleDown()
 		angle = 0.0;
 }
 
-void Player::Score()
+void Player::Health()
 {
-	score = 3;
+
+	health -= health_increment;
 }
 
-//bool Player::Hit(int l, int c, Player &players)
-//{
-//	bool rv = false;
-//
-//	if (c == players[1 - turn].col)
-//		rv = true;
-//
-//	return rv;
-//}
+bool Player::Hit(int l, int c, Player &players, Ground &g)
+{
+	bool rv = false;
+
+	if (c == players.col && l == g.ground.at(players.col))
+		rv = true;
+
+	return rv;
+}
 
 void Player::DrawSettings(int turn)
 {
@@ -105,7 +108,7 @@ void Player::DrawSettings(int turn)
 	mvaddstr(line++, starting_column, ss.str().c_str());
 
 	ss = stringstream();
-	ss << setw(10) << left << "Score: " << setw(6) << score;
+	ss << setw(10) << left << "Health: " << setw(6) << health;
 	mvaddstr(line++, starting_column, ss.str().c_str());
 }
 

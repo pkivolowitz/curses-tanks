@@ -45,14 +45,17 @@ void DrawScreen(Ground & g, Player * players, int turn)
 	refresh();
 }
 
+
 //http://www.iforce2d.net/b2dtut/projected-trajectory
 
 void Shoot(Ground & g, Player * players, int turn)
 {
+	bool rv = false;
+	int enemy = 1 - turn;
 	double angle = players[turn].angle / 180.0 * PI;
 
-	Vec2d p0(players[turn].col, g.ground.at(players[turn].col));
-	Vec2d force(sin(angle) * players[turn].power * 0.2, cos(angle) * players[turn].power * 0.2);
+	Vec2d p0(players[turn].col, g.ground.at(players[turn].col) - 1);
+	Vec2d force(cos(angle) * players[turn].power * 0.2, sin(angle) * players[turn].power * 0.2);
 	Vec2d gravity(0, -0.98);
 	
 
@@ -60,26 +63,77 @@ void Shoot(Ground & g, Player * players, int turn)
 	//double y_component = sin(angle) * players[turn].power * 0.2;
 	//double x_component = cos(angle) * players[turn].power * 0.2;
 	
-	//double pNx;
-	//double pNy;
+	/*double pNx;
+	double pNy;*/
 	double time_divisor = 15.0;
 	
-	/*if (players[turn].s == RIGHT)
-		x_component = -x_component;*/
-
-	/*double p0x = players[turn].col;
-	double p0y = g.ground.at(players[turn].col);*/
+	if (players[turn].s == RIGHT)
+		force.x = -force.x;
+	double x = 0.0;
+	double y = 0.0;
+	//double p0x = players[turn].col;
+	//double p0y = g.ground.at(players[turn].col);
 	// higher ground numbers are lower altitudes (0 is first line, etc).
-	/*p0y = LINES - p0y;*/
+	p0.y = LINES - p0.y;
 	for (int i = 1; i < 5000; i++)
 	{
 		double di = i / time_divisor;
 
-		Vec2d pN(p0 + force * di +  gravity * (di * di + di) * 0.5);
-
-		/*pNx = (int)(p0x + di * x_component);
-		pNy = p0y + di * y_component + (di * di + di) * -9.8 / time_divisor / 1.5;*/
+		//Vec2d pN = p0 + force * di + gravity * (di * di + di) * 0.5;
+		Vec2d pN(x, y);
+		pN.x = (int)(p0.x + di * force.x);
+		pN.y = p0.y + di * force.y + (di * di + di) * -9.8 / time_divisor / 1.5;
 		pN.y = (int)(LINES - pN.y);
+
+
+
+		if (players[enemy].col == pN.x && g.ground.at(players->col) == pN.y)
+		{
+			rv = true;
+			break;
+		}
+		else if (players[enemy].col + 1 == pN.x && g.ground.at(players->col) == pN.y)
+		{
+			rv = true;
+			break;
+		}
+		else if (players[enemy].col - 1 == pN.x && g.ground.at(players->col) == pN.y)
+		{
+			rv = true;
+			break;
+		}
+		else if (players[enemy].col == pN.x && g.ground.at(players->col + 1) == pN.y)
+		{
+			rv = true;
+			break;
+		}
+		else if (players[enemy].col == pN.x && g.ground.at(players->col - 1) == pN.y)
+		{
+			rv = true;
+			break;
+		}
+		else if (players[enemy].col + 1 == pN.x && g.ground.at(players->col + 1) == pN.y)
+		{
+			rv = true;
+			break;
+		}
+		else if (players[enemy].col + 1 == pN.x && g.ground.at(players->col - 1) == pN.y)
+		{
+			rv = true;
+			break;
+		}
+		else if (players[enemy].col - 1 == pN.x && g.ground.at(players->col - 1) == pN.y)
+		{
+			rv = true;
+			break;
+		}
+		else if (players[enemy].col - 1 == pN.x && g.ground.at(players->col + 1) == pN.y)
+		{
+		
+		rv = true;
+		break;
+	}
+
 		if (pN.x < 1 || pN.x >= COLS - 2)
 			break;
 		if (pN.y < 1) 
@@ -87,8 +141,8 @@ void Shoot(Ground & g, Player * players, int turn)
 				MySleep(50);
 				continue;
 			}
-	//	if (pNy >= LINES - 2)
-	//		break;
+		if (pN.y >= LINES - 2)
+			break;
 		if (pN.y > g.ground.at((int)pN.x))
 			break;
 
@@ -97,10 +151,18 @@ void Shoot(Ground & g, Player * players, int turn)
 		refresh();
 		MySleep(50);
 	}
+	if (rv == true)
+	{
+		players[enemy].Health();
+		g.ground.erase(g.ground.begin(), g.ground.end());
+		g.InitializeGround();
+		DrawScreen(g, players, turn);
+	}
 }
 
 int main(int argc, char * argv[])
 {
+	
 	srand((unsigned int)time(nullptr));
 
 	int turn = 0;
@@ -117,6 +179,8 @@ int main(int argc, char * argv[])
 	players[1].Initialize(rand() % (COLS / 4) + 3 * COLS / 4 - 2, RIGHT);
 
 	DrawScreen(g, players, turn);
+	while (true)
+	{
 	while (keep_going)
 	{
 		bool show_char = false;
@@ -158,7 +222,8 @@ int main(int argc, char * argv[])
 		}
 		
 		DrawScreen(g, players, turn);
-		if (show_char) 
+
+		if (show_char)
 		{
 			move(0, 1);
 			stringstream ss;
@@ -166,12 +231,27 @@ int main(int argc, char * argv[])
 			addstr(ss.str().c_str());
 			refresh();
 		}
+		if (players[turn].health == 0)
+		{
+			keep_going = false;
+		}
 	}
 	erase();
-	addstr("Hit any key to exit");
+	move(COLS / 2, LINES / 2);
+	addstr("Would you like to play again? y or n");
 	refresh();
-	getch();
-	echo();
-	endwin();
-	return 0;
+	int a = getch();
+
+	if (a == 'y')
+		continue;
+	else if (a == 'n')
+		break;
+}
+			erase();
+		addstr("Hit any key to exit");
+		refresh();
+		getch();
+		echo();
+		endwin();
+		return 0;
 }

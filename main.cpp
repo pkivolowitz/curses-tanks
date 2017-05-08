@@ -157,29 +157,17 @@ int MainMenu()
 
 	ss = stringstream();
 	move(LINES - 2, 43);
-	ss << "Press The 'E' Key to Continue";
+	ss << "Press The ENTER to Continue";
 	addstr(ss.str().c_str());
 
 	char c = getch();
-	switch (c)
-
-	{
-
-	case 'e':
-
-	case 'E':
-
+	if(c == 10)
 		rv = 4;
-
-		break;
-
-	}
-
+	
 	//add a case where if none of the options are chosen nothing happens
 
 	noecho();
 	return rv;
-
 }
 
 bool hit = false;
@@ -278,21 +266,21 @@ void Shoot(Ground & g, Player * players, int turn, double bulleth, double bullet
 		}
 
 		//fast
-		if (players[turn].power > 75 && players[turn].power < 90)
+		if (players[turn].power > 75 && players[turn].power <= 90)
 
 		{
 			Sleep(90);
 		}
 
 		//average
-		if (players[turn].power > 50 && players[turn].power < 75)
+		if (players[turn].power > 50 && players[turn].power <= 75)
 
 		{
 			Sleep(125);
 		}
 
 		//slower
-		if (players[turn].power > 25 && players[turn].power < 50)
+		if (players[turn].power > 25 && players[turn].power <= 50)
 
 		{
 			Sleep(150);
@@ -332,28 +320,27 @@ void Shoot(Ground & g, Player * players, int turn, double bulleth, double bullet
 		if (hit == true)
 			players[1].health--;*/
 
-		//Testing bullet coordinates//
-		stringstream ss;
-		ss = stringstream();
-		ss << "col: " << bulleth;
-
-		mvaddstr(1, COLS / 2 - 3, ss.str().c_str());
-		refresh();
-
-		ss = stringstream();
-		ss << "line: " << bulletv;
-
-		mvaddstr(2, COLS / 2 - 3, ss.str().c_str());
-		refresh();
-
-		ss = stringstream();
-		ss << "#";
-		mvaddstr(bulletv, bulleth, ss.str().c_str());
-		refresh();
-
-		Sleep(1200);
 	}
-	
+	//Testing bullet coordinates//
+	stringstream ss;
+	ss = stringstream();
+	ss << "col: " << bulleth;
+
+	mvaddstr(1, COLS / 2 - 3, ss.str().c_str());
+	refresh();
+
+	ss = stringstream();
+	ss << "line: " << bulletv;
+
+	mvaddstr(2, COLS / 2 - 3, ss.str().c_str());
+	refresh();
+
+	ss = stringstream();
+	ss << "#";
+	mvaddstr(bulletv, bulleth, ss.str().c_str());
+	refresh();
+
+	Sleep(1200);
 }
 int main(int argc, char * argv[])
 {

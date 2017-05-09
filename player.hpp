@@ -19,7 +19,6 @@ public:
 	void AngleUp();
 	void AngleDown();
 	void Health();
-	bool Hit(int l, int c, Player &players, Ground &g);
 
 	int col;
 	double power;

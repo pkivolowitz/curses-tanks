@@ -70,16 +70,6 @@ void Player::Health()
 	health -= health_increment;
 }
 
-bool Player::Hit(int l, int c, Player &players, Ground &g)
-{
-	bool rv = false;
-
-	if (c == players.col && l == g.ground.at(players.col))
-		rv = true;
-
-	return rv;
-}
-
 void Player::DrawSettings(int turn)
 {
 	bool my_turn = (turn == 0 && s == LEFT) || (turn == 1 && s == RIGHT);

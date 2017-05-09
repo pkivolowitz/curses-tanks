@@ -33,6 +33,30 @@ void MySleep(int milliseconds)
 	usleep(milliseconds * 1000);
 #endif
 }
+
+void Instructions()
+{
+	move(0, 0);
+	addstr("Game Instructions:");
+	move(2, 0);
+	addstr("To increase Power press w");
+	move(4, 0);
+	addstr("To decrease Power press s");
+	move(6, 0);
+	addstr("To increase the Angle press d");
+	move(8, 0);
+	addstr("To decrease the Angle press a");
+	move(10, 0);
+	addstr("To shoot press enter");
+	move(12, 0);
+	addstr("To give up your shot and move right double press c");
+	move(14, 0);
+	addstr("To give up your shot and move left double press x");
+	move(16, 0);
+	addstr("Press c to continue to the game.");
+	refresh();
+}
+
 void DrawScreen(Ground & g, Player * players, int turn)
 {
 	erase();
@@ -51,6 +75,7 @@ void DrawScreen(Ground & g, Player * players, int turn)
 void Shoot(Ground & g, Player * players, int turn)
 {
 	bool rv = false;
+	bool hi = false;
 	int enemy = 1 - turn;
 	double angle = players[turn].angle / 180.0 * PI;
 
@@ -58,28 +83,18 @@ void Shoot(Ground & g, Player * players, int turn)
 	Vec2d force(cos(angle) * players[turn].power * 0.2, sin(angle) * players[turn].power * 0.2);
 	Vec2d gravity(0, -0.98);
 	
-
-	
-	//double y_component = sin(angle) * players[turn].power * 0.2;
-	//double x_component = cos(angle) * players[turn].power * 0.2;
-	
-	/*double pNx;
-	double pNy;*/
 	double time_divisor = 15.0;
 	
 	if (players[turn].s == RIGHT)
 		force.x = -force.x;
 	double x = 0.0;
 	double y = 0.0;
-	//double p0x = players[turn].col;
-	//double p0y = g.ground.at(players[turn].col);
 	// higher ground numbers are lower altitudes (0 is first line, etc).
 	p0.y = LINES - p0.y;
 	for (int i = 1; i < 5000; i++)
 	{
 		double di = i / time_divisor;
 
-		//Vec2d pN = p0 + force * di + gravity * (di * di + di) * 0.5;
 		Vec2d pN(x, y);
 		pN.x = (int)(p0.x + di * force.x);
 		pN.y = p0.y + di * force.y + (di * di + di) * -9.8 / time_divisor / 1.5;
@@ -87,52 +102,97 @@ void Shoot(Ground & g, Player * players, int turn)
 
 
 
-		if (players[enemy].col == pN.x && g.ground.at(players->col) == pN.y)
+		if (players[enemy].col == pN.x && g.ground.at(players[enemy].col) == pN.y)
 		{
 			rv = true;
 			break;
 		}
-		else if (players[enemy].col + 1 == pN.x && g.ground.at(players->col) == pN.y)
+		else if (players[enemy].col + 1 == pN.x && g.ground.at(players[enemy].col) == pN.y)
 		{
 			rv = true;
 			break;
 		}
-		else if (players[enemy].col - 1 == pN.x && g.ground.at(players->col) == pN.y)
+		else if (players[enemy].col - 1 == pN.x && g.ground.at(players[enemy].col) == pN.y)
 		{
 			rv = true;
 			break;
 		}
-		else if (players[enemy].col == pN.x && g.ground.at(players->col + 1) == pN.y)
+		else if (players[enemy].col == pN.x && g.ground.at(players[enemy].col + 1) == pN.y)
 		{
 			rv = true;
 			break;
 		}
-		else if (players[enemy].col == pN.x && g.ground.at(players->col - 1) == pN.y)
+		else if (players[enemy].col == pN.x && g.ground.at(players[enemy].col - 1) == pN.y)
 		{
 			rv = true;
 			break;
 		}
-		else if (players[enemy].col + 1 == pN.x && g.ground.at(players->col + 1) == pN.y)
+		else if (players[enemy].col + 1 == pN.x && g.ground.at(players[enemy].col + 1) == pN.y)
 		{
 			rv = true;
 			break;
 		}
-		else if (players[enemy].col + 1 == pN.x && g.ground.at(players->col - 1) == pN.y)
+		else if (players[enemy].col + 1 == pN.x && g.ground.at(players[enemy].col - 1) == pN.y)
 		{
 			rv = true;
 			break;
 		}
-		else if (players[enemy].col - 1 == pN.x && g.ground.at(players->col - 1) == pN.y)
+		else if (players[enemy].col - 1 == pN.x && g.ground.at(players[enemy].col - 1) == pN.y)
 		{
 			rv = true;
 			break;
 		}
-		else if (players[enemy].col - 1 == pN.x && g.ground.at(players->col + 1) == pN.y)
+		else if (players[enemy].col - 1 == pN.x && g.ground.at(players[enemy].col + 1) == pN.y)
 		{
-		
-		rv = true;
-		break;
-	}
+			rv = true;
+			break;
+		}
+		//hitting yourself
+		else if (players[turn].col == pN.x && g.ground.at(players[turn].col) == pN.y)
+		{
+			hi = true;
+			break;
+		}
+		else if (players[turn].col + 1 == pN.x && g.ground.at(players[turn].col) == pN.y)
+		{
+			hi = true;
+			break;
+		}
+		else if (players[turn].col - 1 == pN.x && g.ground.at(players[turn].col) == pN.y)
+		{
+			hi = true;
+			break;
+		}
+		else if (players[turn].col == pN.x && g.ground.at(players[turn].col + 1) == pN.y)
+		{
+			hi = true;
+			break;
+		}
+		else if (players[turn].col == pN.x && g.ground.at(players[turn].col - 1) == pN.y)
+		{
+			hi = true;
+			break;
+		}
+		else if (players[turn].col + 1 == pN.x && g.ground.at(players[turn].col + 1) == pN.y)
+		{
+			hi = true;
+			break;
+		}
+		else if (players[turn].col + 1 == pN.x && g.ground.at(players[turn].col - 1) == pN.y)
+		{
+			hi = true;
+			break;
+		}
+		else if (players[turn].col - 1 == pN.x && g.ground.at(players[turn].col - 1) == pN.y)
+		{
+			hi = true;
+			break;
+		}
+		else if (players[turn].col - 1 == pN.x && g.ground.at(players[turn].col + 1) == pN.y)
+		{
+			hi = true;
+			break;
+		}
 
 		if (pN.x < 1 || pN.x >= COLS - 2)
 			break;
@@ -158,29 +218,58 @@ void Shoot(Ground & g, Player * players, int turn)
 		g.InitializeGround();
 		DrawScreen(g, players, turn);
 	}
+	if (hi == true)
+	{
+		players[turn].Health();
+		g.ground.erase(g.ground.begin(), g.ground.end());
+		g.InitializeGround();
+		DrawScreen(g, players, turn);
+	}
+}
+
+void Move(Player *players, Ground &g, int turn)
+{
+	int c = getch();
+	if (c == 'c')
+	{
+		//move right
+		players[turn].col = players[turn].col + 1;
+		g.ground.at(players[turn].col) = g.ground.at(players[turn].col + 1);
+	}
+	else if (c == 'x')
+	{
+		players[turn].col = players[turn].col - 1;
+		g.ground.at(players[turn].col) = g.ground.at(players[turn].col - 1);
+		//move left
+	}
 }
 
 int main(int argc, char * argv[])
 {
 	
 	srand((unsigned int)time(nullptr));
-
 	int turn = 0;
 	bool keep_going = true;
+	bool r = true;
 	Ground g;
 	Player players[2];
 
 	initscr();
 	noecho();
 	keypad(stdscr, 1);
-
+	
 	g.InitializeGround();
 	players[0].Initialize(rand() % (COLS / 4), LEFT);
 	players[1].Initialize(rand() % (COLS / 4) + 3 * COLS / 4 - 2, RIGHT);
 
-	DrawScreen(g, players, turn);
-	while (true)
+	while (r)
 	{
+		Instructions();
+		int s = getch();
+		if (s == 'c')
+			r = false;
+	}
+
 	while (keep_going)
 	{
 		bool show_char = false;
@@ -191,20 +280,30 @@ int main(int argc, char * argv[])
 			keep_going = false;
 			break;
 
-		case '<':
+		case 's':
 			players[turn].PowerDown();
 			break;
 
-		case '>':
+		case 'w':
 			players[turn].PowerUp();
 			break;
 
-		case 'u':
+		case 'd':
 			players[turn].AngleUp();
 			break;
 
-		case 'd':
+		case 'a':
 			players[turn].AngleDown();
+			break;
+
+		case 'x':
+			Move(players, g, turn);
+			turn = 1 - turn;
+			break;
+
+		case 'c':
+			Move(players, g, turn);
+			turn = 1 - turn;
 			break;
 
 		case 10:
@@ -231,21 +330,26 @@ int main(int argc, char * argv[])
 			addstr(ss.str().c_str());
 			refresh();
 		}
-		if (players[turn].health == 0)
+		if (players[turn].health == 0 || players[1 - turn].health == 2)
 		{
-			keep_going = false;
-		}
-	}
-	erase();
-	move(COLS / 2, LINES / 2);
-	addstr("Would you like to play again? y or n");
-	refresh();
-	int a = getch();
+			erase();
+			move(COLS / 2, LINES / 2);
+			addstr("Would you like to play again? y or n");
+			refresh();
+			int a = getch();
 
-	if (a == 'y')
-		continue;
-	else if (a == 'n')
-		break;
+			if (a == 'y')
+			{
+				players[0].health = 3;
+				players[1].health = 3;
+				g.ground.erase(g.ground.begin(), g.ground.end());
+				g.InitializeGround();				
+				DrawScreen(g, players, turn);
+				continue;
+			}
+			else if (a == 'n')
+				keep_going = false;
+		}
 }
 			erase();
 		addstr("Hit any key to exit");

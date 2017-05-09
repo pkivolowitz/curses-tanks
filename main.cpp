@@ -206,6 +206,9 @@ void Shoot(Ground & g, Player * players, int turn)
 		if (pN.y > g.ground.at((int)pN.x))
 			break;
 
+		if (pN.y == g.ground.at((int)pN.x))
+			g.ground.at((int)pN.x) = g.ground.at((int)pN.x) + 1;
+
 		move((int)pN.y - 1, (int)pN.x + 1);
 		addch('*');
 		refresh();
@@ -233,13 +236,13 @@ void Move(Player *players, Ground &g, int turn)
 	if (c == 'c')
 	{
 		//move right
-		players[turn].col = players[turn].col + 1;
-		g.ground.at(players[turn].col) = g.ground.at(players[turn].col + 1);
+		players[turn].col = players[turn].col + 2;
+		g.ground.at(players[turn].col) = g.ground.at(players[turn].col + 2);
 	}
 	else if (c == 'x')
 	{
-		players[turn].col = players[turn].col - 1;
-		g.ground.at(players[turn].col) = g.ground.at(players[turn].col - 1);
+		players[turn].col = players[turn].col - 2;
+		g.ground.at(players[turn].col) = g.ground.at(players[turn].col - 2);
 		//move left
 	}
 }
@@ -330,7 +333,7 @@ int main(int argc, char * argv[])
 			addstr(ss.str().c_str());
 			refresh();
 		}
-		if (players[turn].health == 0 || players[1 - turn].health == 2)
+		if (players[turn].health == 0 || players[1 - turn].health == 0)
 		{
 			erase();
 			move(COLS / 2, LINES / 2);
@@ -342,6 +345,7 @@ int main(int argc, char * argv[])
 			{
 				players[0].health = 3;
 				players[1].health = 3;
+				players[turn].Wins();
 				g.ground.erase(g.ground.begin(), g.ground.end());
 				g.InitializeGround();				
 				DrawScreen(g, players, turn);

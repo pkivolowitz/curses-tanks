@@ -17,6 +17,7 @@ extern int max_height_divisor;
 const int Player::power_increment = 1;
 const double Player::angle_increment = 1;
 const int Player::health_increment = 1;
+const int Player::wins_increment = 1;
 
 Player::Player()
 {
@@ -25,6 +26,7 @@ Player::Player()
 	angle = 45.0;
 	power = 50.0;
 	health = 3;
+	wins = 0;
 }
 
 void Player::Initialize(int column, Side side)
@@ -70,6 +72,11 @@ void Player::Health()
 	health -= health_increment;
 }
 
+void Player::Wins()
+{
+	wins += wins_increment;
+}
+
 void Player::DrawSettings(int turn)
 {
 	bool my_turn = (turn == 0 && s == LEFT) || (turn == 1 && s == RIGHT);
@@ -99,6 +106,10 @@ void Player::DrawSettings(int turn)
 
 	ss = stringstream();
 	ss << setw(10) << left << "Health: " << setw(6) << health;
+	mvaddstr(line++, starting_column, ss.str().c_str());
+
+	ss = stringstream();
+	ss << setw(10) << left << "Wins: " << setw(6) << wins;
 	mvaddstr(line++, starting_column, ss.str().c_str());
 }
 

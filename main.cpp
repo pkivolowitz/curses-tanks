@@ -49,9 +49,9 @@ void Instructions()
 	move(10, 0);
 	addstr("To shoot press enter");
 	move(12, 0);
-	addstr("To give up your shot and move right double press c");
+	addstr("To give up your shot and move right double press x");
 	move(14, 0);
-	addstr("To give up your shot and move left double press x");
+	addstr("To give up your shot and move left double press z");
 	move(16, 0);
 	addstr("Press c to continue to the game.");
 	refresh();
@@ -233,17 +233,31 @@ void Shoot(Ground & g, Player * players, int turn)
 void Move(Player *players, Ground &g, int turn)
 {
 	int c = getch();
-	if (c == 'c')
+	if (c == 'x')
 	{
+		if (players[turn].col > COLS - 6)
+		{
+			players[turn].col = players[turn].col;
+		}
 		//move right
-		players[turn].col = players[turn].col + 2;
-		g.ground.at(players[turn].col) = g.ground.at(players[turn].col + 2);
+		else
+		{
+			players[turn].col = players[turn].col + 2;
+		}
+
 	}
-	else if (c == 'x')
+	else if (c == 'z')
 	{
-		players[turn].col = players[turn].col - 2;
-		g.ground.at(players[turn].col) = g.ground.at(players[turn].col - 2);
+		if (players[turn].col < 3)
+		{
+			players[turn].col = players[turn].col;
+		}
 		//move left
+		else
+		{
+			players[turn].col = players[turn].col - 2;
+		}
+		
 	}
 }
 
@@ -299,12 +313,12 @@ int main(int argc, char * argv[])
 			players[turn].AngleDown();
 			break;
 
-		case 'x':
+		case 'z':
 			Move(players, g, turn);
 			turn = 1 - turn;
 			break;
 
-		case 'c':
+		case 'x':
 			Move(players, g, turn);
 			turn = 1 - turn;
 			break;

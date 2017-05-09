@@ -55,8 +55,8 @@ void Player::PowerDown()
 void Player::AngleUp()
 {
 	angle += angle_increment;
-	if (angle >= 90.0)
-		angle = 90.0;
+	if (angle >= 180.0)
+		angle = 180.0;
 }
 
 void Player::AngleDown()
